@@ -18,6 +18,8 @@ import android.widget.EditText;
 public class MainActivity extends AppCompatActivity  {
 
     final int REQUEST_CODE = 554;
+    static String KEY = "url";
+
     EditText edTxt;
 
     @Override
@@ -27,15 +29,50 @@ public class MainActivity extends AppCompatActivity  {
 
         edTxt = (EditText)findViewById(R.id.et_text);
         Button btn_param = (Button)findViewById(R.id.but_param);
+        Button btn_main = (Button)findViewById(R.id.but_main);
 
-        //CUANDO SE CLICKA "OK" SE MANDA LA URL A LA ACTIVITY PARAM
+
+        Button btn_ok = (Button)findViewById(R.id.but_ok);
+
+        //CUANDO SE CARGA LA ACTIVIDAD SE CARGA TAMBIEN LA URL
+        Intent myIntent = getIntent(); // gets the previously created intent
+        if (myIntent.getExtras() != null) {
+            String url = myIntent.getExtras().getString(KEY, "");
+            edTxt.setText(url);
+        } else {
+            btn_ok.setEnabled(false);
+        }
+
+        //CUANDO SE CLICKA "PARAM" SE MANDA LA URL A LA ACTIVITY PARAM
         btn_param.setOnClickListener(new OnClickListener() { // anonymous class
             @Override
             public void onClick(View view) { // can not access to global atributes
                 Intent myIntent;
                 myIntent = new Intent(MainActivity.this, ParamActivity.class);
-                myIntent.putExtra(ParamActivity.KEY, edTxt.getText().toString());
+                myIntent.putExtra(KEY, edTxt.getText().toString());
                 startActivityForResult(myIntent, REQUEST_CODE);
+            }
+        });
+
+        //CUANDO SE CLICKA "MAIN" SE MANDA LA URL A LA ACTIVITY MAIN
+        btn_main.setOnClickListener(new OnClickListener() { // anonymous class
+            @Override
+            public void onClick(View view) { // can not access to global atributes
+                Intent myIntent;
+                myIntent = new Intent(MainActivity.this, MainActivity.class);
+                myIntent.putExtra(KEY, edTxt.getText().toString());
+                startActivityForResult(myIntent, REQUEST_CODE);
+            }
+        });
+
+        //CUANDO SE CLICKA "OK" SE MANDA LA URL DE VUELTA A QUIEN LO HA LLAMADO
+        btn_ok.setOnClickListener(new View.OnClickListener() { // anonymous class
+            @Override
+            public void onClick(View view) { // can not access to global atributes
+                Intent data = new Intent(); // create a new Intent to send back
+                data.putExtra(KEY , edTxt.getText().toString()); // add the parameter(s)
+                setResult(RESULT_OK, data); // indicate that all it is correct
+                finish();
             }
         });
 
@@ -48,9 +85,9 @@ public class MainActivity extends AppCompatActivity  {
         // AND check the request code (to consider different resquests)
         if (requestCode==REQUEST_CODE && resultCode==RESULT_OK) {
             // Use the same key to recover the returned value
-            edTxt.setText(data.getStringExtra(ParamActivity.KEY));
+            edTxt.setText(data.getStringExtra(KEY));
         }
     }
 
-    
+
 }
