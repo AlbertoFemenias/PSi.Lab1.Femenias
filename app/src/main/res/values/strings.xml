@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Lab1.Femenias</string>
+    <string name="main_name">Main Femenias</string>
+    <string name="param_name">Param Femenias</string>
+
+
+    <string name="but_main">Main</string>
+    <string name="but_paramactiv">Param</string>
+    <string name="OK_str">OK</string>
+    <string name="web_str">Web</string>
+    <string name="et_text_str">gac.udc.es</string>
+    <string name="et_hint">gac.udc.es</string>
+    <string name="tv_num">Num:</string>
+
+    <string name="field_empty">Field empty:</string>
+    <string name="but_add_str">Add</string>
+    <string name="but_clear_str">Clear</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="but_block_str">Block</string>
+    <string name="et_example_text">My Text</string>
+
+</resources>
