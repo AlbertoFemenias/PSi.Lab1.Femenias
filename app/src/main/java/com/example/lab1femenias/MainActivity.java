@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity  {
         edTxt = (EditText)findViewById(R.id.et_text);
         Button btn_param = (Button)findViewById(R.id.but_param);
         Button btn_main = (Button)findViewById(R.id.but_main);
+        Button btn_web = (Button)findViewById(R.id.but_implicit);
 
 
         Button btn_ok = (Button)findViewById(R.id.but_ok);
@@ -75,6 +78,33 @@ public class MainActivity extends AppCompatActivity  {
                 finish();
             }
         });
+
+
+        //IMPLICIT INTENT
+        btn_web.setOnClickListener(new View.OnClickListener() { // anonymous class
+            @Override
+            public void onClick(View view) { // can not access to global atributes
+                Log.d("myTag", "Web button pressed");
+                // Create the text message with a string
+                Uri uri = Uri.parse( edTxt.getText().toString() );
+                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                sendIntent.setDataAndType(uri, "text/plain");
+                if (sendIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(sendIntent);
+                }
+
+                /*Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_VIEW);
+                Uri uri = Uri.parse( edTxt.getText().toString() );
+                sendIntent.setData(uri);
+
+                // Verify that the intent will resolve to an activity
+                if (sendIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(sendIntent);
+                }*/
+            }
+        });
+
 
     }
 

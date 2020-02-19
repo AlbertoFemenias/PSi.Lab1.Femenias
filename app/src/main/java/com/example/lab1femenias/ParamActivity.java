@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 public class ParamActivity extends AppCompatActivity {
     static String KEY = "url";
-    
+
     final int REQUEST_CODE = 554;
 
 
