@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("NUEVO ESTADO","MainActivity en estado OnCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -84,7 +86,6 @@ public class MainActivity extends AppCompatActivity  {
         btn_web.setOnClickListener(new View.OnClickListener() { // anonymous class
             @Override
             public void onClick(View view) { // can not access to global atributes
-                Log.d("myTag", "Web button pressed");
                 // Create the text message with a string
                 Uri uri = Uri.parse( edTxt.getText().toString() );
                 Intent sendIntent = new Intent(Intent.ACTION_VIEW);
@@ -92,16 +93,6 @@ public class MainActivity extends AppCompatActivity  {
                 if (sendIntent.resolveActivity(getPackageManager()) != null) {
                     startActivity(sendIntent);
                 }
-
-                /*Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_VIEW);
-                Uri uri = Uri.parse( edTxt.getText().toString() );
-                sendIntent.setData(uri);
-
-                // Verify that the intent will resolve to an activity
-                if (sendIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(sendIntent);
-                }*/
             }
         });
 
@@ -109,7 +100,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-    //ESTA CLASE LA LLAMA EL SISTEMA SOLITO!!!
+    //RECIBE LOS DATOS DE VUELTA - ESTA FUNC LA LLAMA EL SISTEMA SOLITO!!!
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         // check if result is ok or not (e.g.: RESULT_CANCEL)
         // AND check the request code (to consider different resquests)
@@ -119,5 +110,57 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
+    //EL USER TIENE QUE PULSAR EL BACK DOS VECES EN MENOS DE DOS SEGUNDOS
+    private long mBackPressed;
 
+    @Override
+    public void onBackPressed()
+    {
+        if (mBackPressed + 2000 > System.currentTimeMillis())
+        {
+            super.onBackPressed();
+            return;
+        }
+        else { Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show(); }
+
+        mBackPressed = System.currentTimeMillis();
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("NUEVO ESTADO","MainActivity en estado OnStart()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("NUEVO ESTADO","MainActivity en estado OnResume()");
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("NUEVO ESTADO","MainActivity en estado OnPause()");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("NUEVO ESTADO","MainActivity en estado OnStop()");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("NUEVO ESTADO","MainActivity en estado OnRestart()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("NUEVO ESTADO","MainActivity en estado OnDestroy()");
+    }
 }
