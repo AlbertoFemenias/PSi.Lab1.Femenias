@@ -1,19 +1,13 @@
 package com.example.lab1femenias;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
-import android.net.sip.SipSession;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
-import android.widget.Toast;
+
 
 
 
@@ -24,7 +18,7 @@ public class OneFragment extends Fragment {
     onSeekbarChangedListener listener;
 
     public interface onSeekbarChangedListener {
-        public void onSeekBarChanged(int position);
+        void onSeekBarChanged(int position);
     }
 
     public void onAttach(Context context) {
@@ -49,12 +43,10 @@ public class OneFragment extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChangedValue = progress;
             }
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+
             public void onStopTrackingTouch(SeekBar seekBar) {
-
-
                 listener.onSeekBarChanged(progressChangedValue);
             }
         });

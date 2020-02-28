@@ -11,10 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class ParamActivity extends AppCompatActivity {
+
     static String KEY = "url";
-
     final int REQUEST_CODE = 554;
-
     EditText edTxt;
 
 
@@ -90,6 +89,7 @@ public class ParamActivity extends AppCompatActivity {
 
     }
 
+    //RESULTADO DE LA ACTIVIDAD DE ENCIMA
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         // check if result is ok or not (e.g.: RESULT_CANCEL)
         // AND check the request code (to consider different resquests)
@@ -100,6 +100,7 @@ public class ParamActivity extends AppCompatActivity {
     }
 
 
+    //LOS LOGS DE TODOS LOS ESTADOS
     @Override
     protected void onStart() {
         super.onStart();

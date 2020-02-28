@@ -16,6 +16,7 @@ public class TwoFragment extends Fragment {
 
     Button button;
     onBlockPressedListener listener;
+    TextView textView;
 
     public interface onBlockPressedListener {
         public void onBlockPressed();
@@ -30,9 +31,6 @@ public class TwoFragment extends Fragment {
         }
     }
 
-
-
-    TextView textView;
 
     public void setTextSize (int size){
         textView.setTextSize(size);
@@ -55,8 +53,6 @@ public class TwoFragment extends Fragment {
 
         return view;
     }
-
-
 
 
 

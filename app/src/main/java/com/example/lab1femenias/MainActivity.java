@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity implements OneFragment.onSee
     final int REQUEST_CODE = 554;
     static String KEY = "url";
     EditText edTxt;
-    boolean seekbarEnabled = true;
+    boolean seekbarEnabled = true; //si la barra de fragOne está bloqueada
+    private long mBackPressed; //si el user pulsa el boton back
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +34,8 @@ public class MainActivity extends AppCompatActivity implements OneFragment.onSee
         Button btn_web = (Button)findViewById(R.id.but_implicit);
         Button btn_add = (Button)findViewById(R.id.but_add);
         Button btn_clear = (Button)findViewById(R.id.but_clear);
-
-
         Button btn_ok = (Button)findViewById(R.id.but_ok);
+
 
         //CUANDO SE CARGA LA ACTIVIDAD SE CARGA TAMBIEN LA URL
         Intent myIntent = getIntent(); // gets the previously created intent
@@ -94,27 +94,22 @@ public class MainActivity extends AppCompatActivity implements OneFragment.onSee
             }
         });
 
+        //AÑADE UN FRAGMENT ONE
         btn_add.setOnClickListener(new View.OnClickListener() { // anonymous class
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(), "Has pulsado add", Toast.LENGTH_SHORT).show();
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
                 Fragment newFragment = new OneFragment();
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack
                 transaction.replace(R.id.ll_fragm, newFragment, "TAG_ONE");
                 transaction.addToBackStack(null);
-
-                // Commit the transaction
                 transaction.commit();
             }
         });
 
+        //BORRA LOS DOS FRAGMENTOS
         btn_clear.setOnClickListener(new View.OnClickListener() { // anonymous class
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(), "Has pulsado clear", Toast.LENGTH_SHORT).show();
 
                 Fragment fragment = getSupportFragmentManager().findFragmentByTag("TAG_ONE");
                 if(fragment != null)
@@ -133,8 +128,6 @@ public class MainActivity extends AppCompatActivity implements OneFragment.onSee
     //Función que implementa la interfaz del fragmento y salta cuando en el fragmento se mueve la barra
     @Override
     public void onSeekBarChanged(int position) {
-        Toast.makeText(this, "Seek bar progress is :" + position,
-                Toast.LENGTH_SHORT).show();
 
         TwoFragment fragment = (TwoFragment) getSupportFragmentManager().findFragmentByTag("TAG_TWO");
         if(fragment == null){
@@ -158,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements OneFragment.onSee
 
     }
 
+    //FUNCION DEL FRAGMENTO DOS QUE BLOQUEA LA BARRA DEL FRAGMENTO UNO
     @Override
     public void onBlockPressed() {
 
@@ -181,8 +175,6 @@ public class MainActivity extends AppCompatActivity implements OneFragment.onSee
     }
 
     //EL USER TIENE QUE PULSAR EL BACK DOS VECES EN MENOS DE DOS SEGUNDOS
-    private long mBackPressed;
-
     @Override
     public void onBackPressed()
     {
@@ -197,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements OneFragment.onSee
     }
 
 
+    //LOGS DE TODOS LOS ESTADOS
     @Override
     protected void onStart() {
         super.onStart();
