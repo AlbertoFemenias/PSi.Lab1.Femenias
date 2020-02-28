@@ -1,29 +1,25 @@
 package com.example.lab1femenias;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity implements OneFragment.onSeekbarChangedListener,TwoFragment.onBlockPressedListener {
 
     final int REQUEST_CODE = 554;
     static String KEY = "url";
-
     EditText edTxt;
+    boolean seekbarEnabled = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +31,8 @@ public class MainActivity extends AppCompatActivity  {
         Button btn_param = (Button)findViewById(R.id.but_param);
         Button btn_main = (Button)findViewById(R.id.but_main);
         Button btn_web = (Button)findViewById(R.id.but_implicit);
+        Button btn_add = (Button)findViewById(R.id.but_add);
+        Button btn_clear = (Button)findViewById(R.id.but_clear);
 
 
         Button btn_ok = (Button)findViewById(R.id.but_ok);
@@ -96,6 +94,78 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+        btn_add.setOnClickListener(new View.OnClickListener() { // anonymous class
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getBaseContext(), "Has pulsado add", Toast.LENGTH_SHORT).show();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                Fragment newFragment = new OneFragment();
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack
+                transaction.replace(R.id.ll_fragm, newFragment, "TAG_ONE");
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
+            }
+        });
+
+        btn_clear.setOnClickListener(new View.OnClickListener() { // anonymous class
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getBaseContext(), "Has pulsado clear", Toast.LENGTH_SHORT).show();
+
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag("TAG_ONE");
+                if(fragment != null)
+                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+
+                Fragment fragment2 = getSupportFragmentManager().findFragmentByTag("TAG_TWO");
+                if(fragment2 != null)
+                    getSupportFragmentManager().beginTransaction().remove(fragment2).commit();
+            }
+        });
+
+
+    }
+
+
+    //Función que implementa la interfaz del fragmento y salta cuando en el fragmento se mueve la barra
+    @Override
+    public void onSeekBarChanged(int position) {
+        Toast.makeText(this, "Seek bar progress is :" + position,
+                Toast.LENGTH_SHORT).show();
+
+        TwoFragment fragment = (TwoFragment) getSupportFragmentManager().findFragmentByTag("TAG_TWO");
+        if(fragment == null){
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            Fragment newFragment = new TwoFragment();
+            transaction.add(R.id.ll_fragm, newFragment, "TAG_TWO");
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        else if ( ! fragment.isVisible() ){
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.ll_fragm, fragment, "TAG_TWO");
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        TwoFragment frag2 = (TwoFragment) getSupportFragmentManager().findFragmentByTag("TAG_TWO");
+
+        if(frag2!=null){
+            frag2.setTextSize(14+position/5);
+        }
+
+    }
+
+    @Override
+    public void onBlockPressed() {
+
+        seekbarEnabled = !seekbarEnabled;
+        OneFragment frag = (OneFragment) getSupportFragmentManager().findFragmentByTag("TAG_ONE");
+        if(frag != null){
+            frag.seekbar.setEnabled(seekbarEnabled);
+        }
 
     }
 
@@ -163,4 +233,7 @@ public class MainActivity extends AppCompatActivity  {
         super.onDestroy();
         Log.d("NUEVO ESTADO","MainActivity en estado OnDestroy()");
     }
+
+
+
 }
